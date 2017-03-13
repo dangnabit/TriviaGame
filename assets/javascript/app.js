@@ -71,7 +71,7 @@ $(document).ready(function() {
 
 
         selectionClick: function(button) {
-            $question.fadeTo('0', 0);
+            $question.fadeTo('slow', 0);
             $selections.fadeTo('0', 0);
             // console.log(this.dataset.answer);
             if (this.dataset.answer === triviaGame.questions[triviaGame.questionNumber].correct_answer) {
@@ -147,7 +147,7 @@ $(document).ready(function() {
 
     }
 
-    $startBtn.on('click', function() {
+    function gameSetup() {
         triviaGame.questions = [];
         triviaGame.questionNumber = 0;
         triviaGame.time = 45;
@@ -177,12 +177,22 @@ $(document).ready(function() {
                 triviaGame.questions = response.results;
                 console.log(triviaGame.questions);
 
-                setTimeout(function() {
-                    gameTimer = setInterval(triviaGame.timeDown, 1000);
-                    triviaGame.gameGo();
-                }, 500);
+                if (triviaGame.questions.length === 0) {
+                    setTimeout(function() {
+                        $question.text("Failed to fetch Trivia Questions in the category or difficulty. Please change your selections and press Start again.").fadeTo('slow', 1);
+                    }, 500);
+                } else {
 
+                    setTimeout(function() {
+                        gameTimer = setInterval(triviaGame.timeDown, 1000);
+                        triviaGame.gameGo();
+                    }, 500);
+                }
             });
+    }
+
+    $startBtn.on('click', function() {
+        gameSetup();
     });
 
     $(document).on('click', '.triviaBtn', triviaGame.selectionClick);
