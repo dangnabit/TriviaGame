@@ -24,6 +24,7 @@ $(document).ready(function() {
         questionNumber: 0,
         questions: [],
 
+        // Game timer, checks end game conditions.
         timeDown: function() {
             triviaGame.time--;
             $time.text(triviaGame.time);
@@ -32,15 +33,16 @@ $(document).ready(function() {
             }
         },
 
+        // Builds display array.
         displayQuestion: function(questionIndex) {
             var fullSelectionList = [];
             var correct_answerPushed = false;
             var i = 0;
-
+            var rand;
 
             // builds random selection list
             while (fullSelectionList.length < 4 || i < 3) {
-                var rand = Math.round(Math.random() * 3);
+                rand = Math.round(Math.random() * 3);
 
                 if (rand == 1 && !correct_answerPushed) {
                     fullSelectionList.push(questionIndex.correct_answer);
@@ -59,10 +61,10 @@ $(document).ready(function() {
                 var $button = $('<div>');
                 var $br = $('<br>');
                 $button.addClass('btn btn-lg btn-primary col-sm-12 triviaBtn');
-                $button.attr('data-answer', fullSelectionList[i])
+                $button.attr('data-answer', fullSelectionList[i]);
                 $button.text(fullSelectionList[i]);
-                $selections.append($button)
-            })
+                $selections.append($button);
+            });
 
             $selections.fadeTo('slow', 1);
             $question.html(questionIndex.question).fadeTo('slow', 1);
@@ -107,7 +109,7 @@ $(document).ready(function() {
         },
 
         endGame: function() {
-            var unanswered = 10 - triviaGame.questionNumber
+            var unanswered = 10 - triviaGame.questionNumber;
 
             clearInterval(gameTimer);
             $question.empty();
@@ -123,7 +125,7 @@ $(document).ready(function() {
         }
 
 
-    }
+    };
 
     function clearGame() {
         $selections.empty();
@@ -170,25 +172,24 @@ $(document).ready(function() {
         console.log(queryURL);
 
         $.ajax({
-                url: queryURL,
-                type: 'GET',
-            })
-            .done(function(response) {
-                triviaGame.questions = response.results;
-                console.log(triviaGame.questions);
+            url: queryURL,
+            type: 'GET'
+        }).done(function(response) {
+            triviaGame.questions = response.results;
+            console.log(triviaGame.questions);
 
-                if (triviaGame.questions.length === 0) {
-                    setTimeout(function() {
-                        $question.text("Failed to fetch Trivia Questions in the category or difficulty. Please change your selections and press Start again.").fadeTo('slow', 1);
-                    }, 500);
-                } else {
+            if (triviaGame.questions.length === 0) {
+                setTimeout(function() {
+                    $question.text("Failed to fetch Trivia Questions in the category or difficulty. Please change your selections and press Start again.").fadeTo('slow', 1);
+                }, 500);
+            } else {
 
-                    setTimeout(function() {
-                        gameTimer = setInterval(triviaGame.timeDown, 1000);
-                        triviaGame.gameGo();
-                    }, 500);
-                }
-            });
+                setTimeout(function() {
+                    gameTimer = setInterval(triviaGame.timeDown, 1000);
+                    triviaGame.gameGo();
+                }, 500);
+            }
+        });
     }
 
     $startBtn.on('click', function() {

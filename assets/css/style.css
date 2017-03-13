@@ -2,8 +2,20 @@ body{
 	background-image: url("../images/dark_embroidery.png");
 }
 
+
+/*for future use. currently hidden because its just a placeholder*/
 .navbar{
 	visibility: hidden;
+}
+
+.jumbotron, .gameSection{
+	border-color: #df691a;
+	border-style: solid;
+	border-width: 2px;
+	border-radius: 6px;
+	border-right: dashed;
+	border-left: dashed;
+	
 }
 
 .timer{
@@ -13,9 +25,10 @@ body{
 }
 
 #question{
+	padding-bottom: 5px;
 	font-size: 20px;
-	height: 100px;
-	color:#fff;
+	height: 62px;
+	color:#2f2f2f;
 
 }
 
