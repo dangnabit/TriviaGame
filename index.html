@@ -16,58 +16,55 @@
 <body>
   <div class="container">
     <div class="row">
-      <div class="jumbotron" id="instructions">
+      <div class="jumbotron col-sm-5" id="instructions">
         <div class="text-center">
-          <h1>Trivia!</h1>
+          <h1>Trivia Time!</h1>
           <p>Welcome to the wonderful world of trivia! Choose your catagory and difficulty level below! </p>
+          <br>
         </div>
         <div class="row">
-        <div class="col-sm-6">
-          <label for="trivia_category" class="text-right">Select a Catagory:</label>
-          <select id="trivia_category" class="form-control">
-            <option value="any">Any Category</option>
-            <option value="9">General Knowledge</option>
-            <option value="10">Entertainment: Books</option>
-            <option value="11">Entertainment: Film</option>
-            <option value="12">Entertainment: Music</option>
-            <option value="13">Entertainment: Musicals &amp; Theatres</option>
-            <option value="14">Entertainment: Television</option>
-            <option value="17">Science &amp; Nature</option>
-            <option value="18">Science: Computers</option>
-            <option value="19">Science: Mathematics</option>
-            <option value="20">Mythology</option>
-            <option value="21">Sports</option>
-            <option value="22">Geography</option>
-            <option value="23">History</option>
-            <option value="24">Politics</option>
-            <option value="25">Art</option>
-            <option value="26">Celebrities</option>
-            <option value="27">Animals</option>
-          </select>
+          <div class="col-sm-6">
+            <label for="trivia_category" class="text-right">Select a Catagory:</label>
+            <select id="trivia_category" class="form-control">
+              <option value="any">Any Category</option>
+              <option value="9">General Knowledge</option>
+              <option value="10">Entertainment: Books</option>
+              <option value="11">Entertainment: Film</option>
+              <option value="12">Entertainment: Music</option>
+              <option value="13">Entertainment: Musicals &amp; Theatres</option>
+              <option value="14">Entertainment: Television</option>
+              <option value="17">Science &amp; Nature</option>
+              <option value="18">Science: Computers</option>
+              <option value="19">Science: Mathematics</option>
+              <option value="20">Mythology</option>
+              <option value="21">Sports</option>
+              <option value="22">Geography</option>
+              <option value="23">History</option>
+              <option value="24">Politics</option>
+              <option value="25">Art</option>
+              <option value="27">Animals</option>
+            </select>
           </div>
           <div class="col-sm-6">
-          <label for="trivia_category" class="text-right">Select a Difficulty:</label>
-          <select id="trivia_difficulty" class="form-control">
-            <option value="any">Any Difficulty</option>
-            <option value="easy">Easy</option>
-            <option value="medium">Medium</option>
-            <option value="hard">Hard</option>
-          </select>
+            <label for="trivia_category">Select a Difficulty:</label>
+            <select id="trivia_difficulty" class="form-control">
+              <option value="any">Any Difficulty</option>
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+            <br>
           </div>
+          <div id="gameStart" class="btn btn-lg btn-primary col-sm-6 col-sm-offset-3">Start!</div>
         </div>
-        <br>
-        <div id="gameStart" class="btn btn-lg btn-primary col-sm-4 col-sm-offset-4">Start!</div>
-        <br>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-4 panel panel-body text-bold">
-        <p class="timer">Time: <span id="time">30</span></p>
+      <div class="col-sm-6 col-sm-offset-1 panel-default text-bold text-center">
+        <p class="timer"><strong>Time: <span id="time">30</span></strong></p>
       </div>
-    </div>
-    <div class="row" id="question">
-    </div>
-    <div class="row" id="selections">
+      <div class="panel panel-default">
+        <div id="question" class="panel-heading col-sm-6 col-sm-offset-1 text-center align-middle"><p>Questions will show up here!</p></div>
+        <div id="selections" class="panel panel-body col-sm-6 col-sm-offset-1"></div>
+      </div>
     </div>
     <div class="footer navbar navbar-default navbar-fixed-bottom align-middle text-default text-center text-muted">
       <p>&copy; Copyright 2017 Dan Gabel</p>
@@ -76,7 +73,3 @@
 </body>
 
 </html>
-<!-- TODO 
-
-
--->

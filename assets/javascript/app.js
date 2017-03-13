@@ -13,24 +13,115 @@ $(document).ready(function() {
     var gameTimer;
     var queryURL;
 
-    var triviaGame = {
-    	
-    	time: 45,
+    var score = 0;
+    var missedAnswers = 0;
 
-    	questions: [],
+    var triviaGame = {
+
+        time: 30,
+        questionNumber: 0,
+        questions: [],
 
         timeDown: function() {
             triviaGame.time--;
             $time.text(triviaGame.time);
-            console.log(triviaGame.time);
+            
+            if (triviaGame.time <= 0){
+            	triviaGame.endGame();
+            }
         },
 
-        displayQuestion: function() {
+        displayQuestion: function(questionIndex) {
+            var fullSelectionList = [];
+            var correct_answerPushed = false;
+            var i = 0;
+
+
+            // builds random selection list
+            while (fullSelectionList.length < 4 || i < 3) {
+                var rand = Math.round(Math.random()*3);
+
+                if (rand == 1 && !correct_answerPushed) {
+                    fullSelectionList.push(questionIndex.correct_answer);
+                    correct_answerPushed = true;
+                } else if (i == 3 && !correct_answerPushed) {
+                    fullSelectionList.push(questionIndex.correct_answer);
+                    correct_answerPushed = true;
+                } else if (i < 3) {
+                    fullSelectionList.push(questionIndex.incorrect_answers[i]);
+                    i++;
+                }
+
+            }
+
+            $.each(fullSelectionList, function(i) {
+                var $button = $('<div>');
+                var $br = $('<br>');
+                $button.addClass('btn btn-lg btn-primary col-sm-12 triviaBtn');
+                $button.attr('data-answer', fullSelectionList[i])
+                $button.text(fullSelectionList[i]);
+                $selections.append($button)
+            })
+
+            $selections.fadeTo('slow', 1);
+            $question.html(questionIndex.question).fadeTo('slow', 1);
+ 
+        },
+
+
+        selectionClick : function(button){
+            $question.fadeTo('0', 0);
+            $selections.fadeTo('0', 0);
+          	// console.log(this.dataset.answer);
+        	if (this.dataset.answer === triviaGame.questions[triviaGame.questionNumber].correct_answer){        		
+        		$(this).addClass('btn-success');
+        		triviaGame.questionNumber ++;
+        		score ++;
+        	}else{
+        		$(this).addClass('btn-danger');
+        		$('.triviaBtn').each(function(){
+        			if (this.dataset.answer === triviaGame.questions[triviaGame.questionNumber].correct_answer){
+        				$(this).addClass('btn-success');
+        			} 
+        		});
+        		triviaGame.questionNumber ++;
+        		missedAnswers ++;
+        	}
+
+        	if (triviaGame.questionNumber < triviaGame.questions.length){
+        		setTimeout(function(){
+        			triviaGame.gameGo();
+        		}, 400);
+        		
+        	} else {        		
+        		setTimeout(function(){
+        			triviaGame.endGame();
+        		}, 400);
+        	}
+        },
+
+        gameGo: function() {
+            clearGame();
+            this.displayQuestion(this.questions[this.questionNumber]);            
+        },
+
+        endGame: function(){
+        	var unanswered = 10 - triviaGame.questionNumber
+
+        	clearInterval(gameTimer);
+        	$question.empty();
+        	$selections.empty();
+        	$question.append("Score: "+ score).fadeTo('slow', 1);
+        	$selections.html("<p class='text-center'>Incorrect Answers: " + missedAnswers + "</p><p class='text-center'>Unanswered Questions: " + unanswered + "</p>");
 
         }
 
-    	
 
+    }
+
+    function clearGame() {
+        $selections.empty();
+        $question.empty();
     }
 
     function urlCreator() {
@@ -51,10 +142,23 @@ $(document).ready(function() {
     }
 
     $startBtn.on('click', function() {
+        triviaGame.questions = [];
+        triviaGame.questionNumber = 0;
+        triviaGame.time = 30;
+        score = 0;
+        missedAnswers = 0;
+        
+        $time.text('30');
+        clearInterval(gameTimer);
+        
+
         urlCreator();
 
-        console.log(queryURL);
+        clearGame();
 
+
+        console.log(queryURL);
+        
         $.ajax({
                 url: queryURL,
                 type: 'GET',
@@ -63,70 +167,10 @@ $(document).ready(function() {
                 triviaGame.questions = response.results;
                 console.log(triviaGame.questions);
                 gameTimer = setInterval(triviaGame.timeDown, 1000);
+                triviaGame.gameGo();
             });
     });
 
-
+    $(document).on('click', '.triviaBtn', triviaGame.selectionClick);
 
 });
-/*
- TODO:
-	Add ajax call to retrieve questions. 
-	Parse questions and put them into the $question field
-	Parse 
- 
-
-
-https://opentdb.com/api.php?amount=10&category= + CAT + &difficulty= + DIFFICULTY + &type=multiple
-
-"9" General Knowledge
-"10" Entertainment: Books
-"11" Entertainment: Film
-"12" Entertainment: Music
-"13" Entertainment: Musicals &amp; Theatres
-"14" Entertainment: Television
-"15" Entertainment: Video Games
-"16" Entertainment: Board Games
-"17" Science &amp; Nature
-"18" Science: Computers
-"19" Science: Mathematics
-"20" Mythology
-"21" Sports
-"22" Geography
-"23" History
-"24" Politics
-"25" Art
-"26" Celebrities
-"27" Animals
-"28" Vehicles
-"29" Entertainment: Comics
-"30" Science: Gadgets
-"31" Entertainment: Japanese Anime &amp; Manga
-"32" Entertainment: Cartoon &amp; Animations
-
-easy
-medium
-hard
-
-
-
-Open Triva response
-
-{
-"response_code": 0,
-"results": [
-	{
-	"category": "Entertainment: Film",
-	"type": "multiple",
-	"difficulty": "hard",
-	"question": "Which was the first of Alfred Hitchcock&#039;s movies to be filmed in colour?",
-	"correct_answer": "Rope",
-	"incorrect_answers": [
-	"Psycho",
-	"Vertigo",
-	"Rebecca"
-]
-}
-
-
-*/

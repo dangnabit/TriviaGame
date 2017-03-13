@@ -1,9 +1,16 @@
+.timer{
+	font-size: 24px;
+	padding-top: 20px;
+}
 
+#question{
+	font-size: 20px;
+	height: 100px;
+}
 
-
-
-
-
+.btn{
+	margin-bottom: 20px;
+}
 
 .footer{
 	position: absolute;
